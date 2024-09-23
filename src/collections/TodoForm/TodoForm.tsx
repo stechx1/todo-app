@@ -2,16 +2,17 @@ import { useState } from 'react';
 import { Button, DatePicker, Input, TextArea } from '../../components';
 import { FaPlus } from 'react-icons/fa6';
 import { DatePickerProps } from 'antd';
+import { useTodo } from '../../context';
 
 export const TodoForm = () => {
   const [taskName, setTaskName] = useState('');
   const [date, setDate] = useState<Date | null>(null);
   const [description, setDescription] = useState('');
+  const {addTodo} = useTodo();
 
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(taskName, date, description);
-    //TODO: add to context
+    addTodo(taskName, description, date)
     setTaskName('');
     setDate(null);
     setDescription('');

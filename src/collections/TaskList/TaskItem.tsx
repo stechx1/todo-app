@@ -4,7 +4,7 @@ type taskType = 'overdue' | 'outstanding' | 'complete';
 
 interface TaskItemProps {
   taskType: taskType;
-  dueDate: Date;
+  dueDate: Date | null;
   description?: string;
   completed: boolean;
   name: string;
@@ -22,7 +22,7 @@ export const TaskItem: React.FC<TaskItemProps> = ({
     month: 'short',
     day: 'numeric',
   };
-  const formattedDate = dueDate.toLocaleDateString('en-US', options);
+  const formattedDate = dueDate && dueDate.toLocaleDateString('en-US', options);
   return (
     <div className='flex justify-between'>
       <div className='flex flex-col justify-center'>
