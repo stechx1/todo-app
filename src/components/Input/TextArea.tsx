@@ -1,9 +1,4 @@
-interface TextAreaProps {
-  placeholder: string;
-  rows?: number;
-}
-
-export const TextArea: React.FC<TextAreaProps> = ({
+export const TextArea: React.FC<React.TextareaHTMLAttributes<HTMLTextAreaElement>> = ({
   placeholder,
   rows = 4,
   ...props
