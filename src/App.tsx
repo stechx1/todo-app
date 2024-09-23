@@ -1,7 +1,11 @@
+import { Button } from './components';
+import { FaPlus } from 'react-icons/fa6';
+
 function App() {
   return (
-    <div className="flex items-center justify-center h-screen">
+    <div className='flex flex-col items-center'>
       <p>Inter font</p>
+      <Button icon={<FaPlus />}>Add</Button>
     </div>
   );
 }
