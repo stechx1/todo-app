@@ -5,3 +5,16 @@
 *{
   font-family: "Inter", sans-serif;
 }
+
+.ant-picker .ant-picker-input >input {
+  font-size: 16px;
+}
+
+.ant-picker .ant-picker-suffix{
+  color: #667085
+}
+
+.ant-picker .ant-picker-input > input::placeholder {
+  color: #667085 !important;
+  font-size: 16px;
+}
