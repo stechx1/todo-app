@@ -6,7 +6,7 @@ export const Checkbox: React.FC<CheckboxProps> = ({
   ...props
 }) => {
   return (
-    <AntCheckbox onChange={onChange} {...props}>
+    <AntCheckbox className='font-medium text-[16px]' onChange={onChange} {...props}>
       {children}
     </AntCheckbox>
   );
