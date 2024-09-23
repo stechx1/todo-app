@@ -2,19 +2,44 @@
 @tailwind components;
 @tailwind utilities;
 
-*{
-  font-family: "Inter", sans-serif;
+* {
+  font-family: 'Inter', sans-serif;
 }
 
-.ant-picker .ant-picker-input >input {
+.ant-picker .ant-picker-input > input {
   font-size: 16px;
 }
 
-.ant-picker .ant-picker-suffix{
-  color: #667085
+.ant-picker .ant-picker-suffix {
+  color: #667085;
 }
 
 .ant-picker .ant-picker-input > input::placeholder {
   color: #667085 !important;
   font-size: 16px;
+}
+
+.ant-checkbox-checked .ant-checkbox-inner {
+  background-color: #f9f5ff;
+  border-color: #7f56d9;
+  border: 1px solid #7f56d9;
+}
+
+.ant-checkbox-checked .ant-checkbox-inner::after {
+  border-color: #7f56d9 !important;
+  color: #7f56d9 !important;
+}
+
+.ant-checkbox-checked .ant-checkbox-inner:hover,
+.ant-checkbox-checked .ant-checkbox-inner:focus,
+.ant-checkbox-checked .ant-checkbox-inner:active {
+  border-color: #7f56d9 !important;
+  color: #7f56d9;
+}
+
+.ant-checkbox-wrapper:hover .ant-checkbox-inner,
+.ant-checkbox:hover .ant-checkbox-inner,
+.ant-checkbox-input:focus .ant-checkbox-inner {
+  border-color: #7f56d9 !important;
+  background-color: #f9f5ff !important;
 }
