@@ -8,7 +8,7 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 
 export const Button = ({ icon, children, onClick, ...props }: ButtonProps) => {
   return (
-    <button className='bg-[#475467] text-white py-2 px-4 rounded-md' {...props} onClick={onClick}>
+    <button className='bg-[#475467] text-white py-2 px-4 rounded-lg' {...props} onClick={onClick}>
       <div className='flex gap-2 items-center'>
         {icon}
         {children}
