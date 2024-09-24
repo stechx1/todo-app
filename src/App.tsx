@@ -17,7 +17,7 @@ function App() {
     setTodos((prev) => [
       ...prev,
       {
-        id: Math.random().toString(36).substr(2, 0),
+        id: Math.random().toString(36).substr(2, 9),
         name,
         dueDate,
         description,
@@ -43,10 +43,23 @@ function App() {
   const toggleCompletion = (id: string) => {
     setTodos((prev) =>
       prev.map((todo) =>
-        todo.id === id ? { ...todo, completed: !todo.isCompleted } : todo
+        todo.id === id ? { ...todo, isCompleted: !todo.isCompleted } : todo
       )
     );
   };
+
+
+  const outstandingTodos = (todos: Todo[]) => {
+    return todos.filter((todo) => todo.dueDate && todo.dueDate >= new Date());
+  }
+
+  const overdueTodos = (todos: Todo[]) => {
+    return todos.filter((todo) => todo.dueDate && todo.dueDate < new Date());
+  }
+
+  const completeTodos = (todos: Todo[]) => {
+    return todos.filter((todo) => todo.isCompleted);
+  }
 
   return (
     <TodoProvider value={{ todos, addTodo, toggleCompletion }}>
@@ -54,31 +67,31 @@ function App() {
         <div className='max-w-[600px] flex flex-col gap-8'>
           <div>
             <h1 className='text-3xl font-semibold mb-2'>
-              To Do <span className='text-[#667085] font-normal '>{8}</span>
+              To Do <span className='text-[#667085] font-normal '>{todos.length}</span>
             </h1>
             <TodoForm />
           </div>
 
           <div>
             <h2 className='text-2xl font-medium'>
-              Overdue <span className='text-[#667085] font-normal'>{3}</span>
+              Overdue <span className='text-[#667085] font-normal'>{overdueTodos(todos).length}</span>
             </h2>
-            <TaskList taskType='overdue' />
+            <TaskList todos={overdueTodos(todos)} taskType='overdue' />
           </div>
 
           <div>
             <h2 className='text-2xl font-medium'>
               Outstanding{' '}
-              <span className='text-[#667085] font-normal'>{3}</span>
+              <span className='text-[#667085] font-normal'>{outstandingTodos(todos).length}</span>
             </h2>
-            <TaskList taskType='outstanding' />
+            <TaskList todos={outstandingTodos(todos)} taskType='outstanding' />
           </div>
 
           <div>
             <h2 className='text-2xl font-medium'>
               Complete <span className='text-[#667085] font-normal'>{2}</span>
             </h2>
-            <TaskList taskType='outstanding' />
+            <TaskList todos={completeTodos(todos)} taskType='complete' />
           </div>
         </div>
       </div>
