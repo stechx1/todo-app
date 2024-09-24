@@ -1,3 +1,4 @@
+import { Dayjs } from 'dayjs';
 import { Checkbox } from '../../components';
 import { useTodo } from '../../context';
 
@@ -6,7 +7,7 @@ type taskType = 'overdue' | 'outstanding' | 'complete';
 interface TaskItemProps {
   id: string;
   taskType: taskType;
-  dueDate: Date | null;
+  dueDate: Dayjs | null;
   description?: string;
   completed: boolean;
   name: string;
@@ -20,12 +21,7 @@ export const TaskItem: React.FC<TaskItemProps> = ({
   completed,
   name,
 }) => {
-  const options: Intl.DateTimeFormatOptions = {
-    year: 'numeric',
-    month: 'short',
-    day: 'numeric',
-  };
-  const formattedDate = dueDate && dueDate.toLocaleDateString('en-US', options);
+  const formattedDate = dueDate && dueDate.format("MMM DD, YYYY")
   const { toggleCompletion } = useTodo();
   return (
     <div className='flex justify-between'>

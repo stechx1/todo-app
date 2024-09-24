@@ -1,16 +1,10 @@
 import React, { useContext } from "react";
-
-interface Todo {
-  id: string; 
-  name: string;
-  dueDate: Date | null; 
-  description: string;
-  isCompleted: boolean;
-}
+import { Todo } from "../types";
+import { Dayjs } from "dayjs";
 
 interface TodoContextType {
   todos: Todo[];
-  addTodo: (name: string, description: string, dueDate: Date | null) => void;
+  addTodo: (name: string, description: string, dueDate: Dayjs | null) => void;
   toggleCompletion: (id: string) => void;
 }
 

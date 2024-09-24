@@ -3,26 +3,24 @@ import { Button, DatePicker, Input, TextArea } from '../../components';
 import { FaPlus } from 'react-icons/fa6';
 import { DatePickerProps } from 'antd';
 import { useTodo } from '../../context';
+import { Dayjs } from 'dayjs'; 
 
 export const TodoForm = () => {
   const [taskName, setTaskName] = useState('');
-  const [date, setDate] = useState<Date | null>(null);
+  const [date, setDate] = useState<Dayjs | null>(null); 
   const [description, setDescription] = useState('');
-  const {addTodo} = useTodo();
+  const { addTodo } = useTodo();
 
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    addTodo(taskName, description, date)
+    addTodo(taskName, description, date);
     setTaskName('');
     setDate(null);
     setDescription('');
   };
 
   const onDateChange: DatePickerProps['onChange'] = (date, dateString) => {
-    if (date) {
-      const dateFormat = date.toDate();
-      setDate(dateFormat);
-    }
+    setDate(date)
   };
   return (
     <form onSubmit={onSubmit} className='flex flex-col gap-2'>
@@ -34,6 +32,7 @@ export const TodoForm = () => {
           required
         />
         <DatePicker
+          value={date}
           onChange={onDateChange}
           placeholder='mm/dd/yyyy'
           format='MMM DD, YYYY'

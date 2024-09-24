@@ -1,19 +1,16 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { TaskList, TodoForm } from './collections';
 import { TodoProvider } from './context';
+import { Todo } from './types';
+import dayjs, { Dayjs } from 'dayjs';
 
 function App() {
-  // TODO: types seperate folder
-  type Todo = {
-    id: string;
-    name: string;
-    description: string;
-    dueDate: Date | null;
-    isCompleted: boolean;
-  };
-
   const [todos, setTodos] = useState<Todo[]>([]);
-  const addTodo = (name: string, description: string, dueDate: Date | null) => {
+  const addTodo = (
+    name: string,
+    description: string,
+    dueDate: Dayjs | null
+  ) => {
     setTodos((prev) => [
       ...prev,
       {
@@ -26,20 +23,6 @@ function App() {
     ]);
   };
 
-  useEffect(() => {
-    const storedTodos = localStorage.getItem('todos');
-    if (storedTodos) {
-      const todos = JSON.parse(storedTodos);
-      if (Array.isArray(todos)) {
-        setTodos(todos);
-      }
-    }
-  }, []);
-
-  useEffect(() => {
-    localStorage.setItem('todos', JSON.stringify(todos));
-  }, [todos]);
-
   const toggleCompletion = (id: string) => {
     setTodos((prev) =>
       prev.map((todo) =>
@@ -48,18 +31,27 @@ function App() {
     );
   };
 
+  const getOutstandingTodos = (todos: Todo[]) => {
+    return todos.filter(
+      (todo) =>
+        !todo.isCompleted && todo.dueDate && todo.dueDate.isAfter(dayjs())
+    );
+  };
 
-  const outstandingTodos = (todos: Todo[]) => {
-    return todos.filter((todo) => todo.dueDate && todo.dueDate >= new Date());
-  }
+  const getOverdueTodos = (todos: Todo[]) => {
+    return todos.filter(
+      (todo) =>
+        !todo.isCompleted && todo.dueDate && todo.dueDate.isBefore(dayjs())
+    );
+  };
 
-  const overdueTodos = (todos: Todo[]) => {
-    return todos.filter((todo) => todo.dueDate && todo.dueDate < new Date());
-  }
-
-  const completeTodos = (todos: Todo[]) => {
+  const getCompleteTodos = (todos: Todo[]) => {
     return todos.filter((todo) => todo.isCompleted);
-  }
+  };
+
+  const overdueTodos = getOverdueTodos(todos);
+  const outstandingTodos = getOutstandingTodos(todos);
+  const completedTodos = getCompleteTodos(todos);
 
   return (
     <TodoProvider value={{ todos, addTodo, toggleCompletion }}>
@@ -67,31 +59,42 @@ function App() {
         <div className='max-w-[600px] flex flex-col gap-8'>
           <div>
             <h1 className='text-3xl font-semibold mb-2'>
-              To Do <span className='text-[#667085] font-normal '>{todos.length}</span>
+              To Do{' '}
+              <span className='text-[#667085] font-normal '>
+                {todos.length}
+              </span>
             </h1>
             <TodoForm />
           </div>
 
           <div>
             <h2 className='text-2xl font-medium'>
-              Overdue <span className='text-[#667085] font-normal'>{overdueTodos(todos).length}</span>
+              Overdue{' '}
+              <span className='text-[#667085] font-normal'>
+                {overdueTodos.length}
+              </span>
             </h2>
-            <TaskList todos={overdueTodos(todos)} taskType='overdue' />
+            <TaskList todos={overdueTodos} taskType='overdue' />
           </div>
 
           <div>
             <h2 className='text-2xl font-medium'>
               Outstanding{' '}
-              <span className='text-[#667085] font-normal'>{outstandingTodos(todos).length}</span>
+              <span className='text-[#667085] font-normal'>
+                {outstandingTodos.length}
+              </span>
             </h2>
-            <TaskList todos={outstandingTodos(todos)} taskType='outstanding' />
+            <TaskList todos={outstandingTodos} taskType='outstanding' />
           </div>
 
           <div>
             <h2 className='text-2xl font-medium'>
-              Complete <span className='text-[#667085] font-normal'>{2}</span>
+              Complete{' '}
+              <span className='text-[#667085] font-normal'>
+                {completedTodos.length}
+              </span>
             </h2>
-            <TaskList todos={completeTodos(todos)} taskType='complete' />
+            <TaskList todos={completedTodos} taskType='complete' />
           </div>
         </div>
       </div>
