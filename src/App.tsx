@@ -1,8 +1,9 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { TaskList, TodoForm } from './collections';
 import { TodoProvider } from './context';
 import { Todo } from './types';
 import dayjs, { Dayjs } from 'dayjs';
+import { v4 as uuidv4 } from 'uuid';
 
 function App() {
   const [todos, setTodos] = useState<Todo[]>([]);
@@ -14,7 +15,7 @@ function App() {
     setTodos((prev) => [
       ...prev,
       {
-        id: Math.random().toString(36).substr(2, 9),
+        id: uuidv4(),
         name,
         dueDate,
         description,
@@ -49,9 +50,9 @@ function App() {
     return todos.filter((todo) => todo.isCompleted);
   };
 
-  const overdueTodos = getOverdueTodos(todos);
-  const outstandingTodos = getOutstandingTodos(todos);
-  const completedTodos = getCompleteTodos(todos);
+  const overdueTodos = useMemo(() => getOverdueTodos(todos), [todos]);
+  const outstandingTodos = useMemo(() => getOutstandingTodos(todos), [todos]);
+  const completedTodos = useMemo(() => getCompleteTodos(todos), [todos]);
 
   return (
     <TodoProvider value={{ todos, addTodo, toggleCompletion }}>
