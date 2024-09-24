@@ -45,7 +45,7 @@ export const TodoForm = () => {
           value={description}
           onChange={(e) => setDescription(e.target.value)}
           placeholder='Description (optional)'
-          cols={38}
+          cols={40}
         />
       </div>
     </form>

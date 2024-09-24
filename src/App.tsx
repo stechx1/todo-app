@@ -1,58 +1,20 @@
-import { useMemo, useState } from 'react';
 import { TaskList, TodoForm } from './collections';
 import { TodoProvider } from './context';
-import { Todo } from './types';
-import dayjs, { Dayjs } from 'dayjs';
-import { v4 as uuidv4 } from 'uuid';
+import { useTodos } from './hooks/useTodos';
 
 function App() {
-  const [todos, setTodos] = useState<Todo[]>([]);
-  const addTodo = (
-    name: string,
-    description: string,
-    dueDate: Dayjs | null
-  ) => {
-    setTodos((prev) => [
-      ...prev,
-      {
-        id: uuidv4(),
-        name,
-        dueDate,
-        description,
-        isCompleted: false,
-      },
-    ]);
-  };
+  const {
+    todos,
+    addTodo,
+    toggleCompletion,
+    getOutstandingTodos,
+    getOverdueTodos,
+    getCompleteTodos,
+  } = useTodos();
 
-  const toggleCompletion = (id: string) => {
-    setTodos((prev) =>
-      prev.map((todo) =>
-        todo.id === id ? { ...todo, isCompleted: !todo.isCompleted } : todo
-      )
-    );
-  };
-
-  const getOutstandingTodos = (todos: Todo[]) => {
-    return todos.filter(
-      (todo) =>
-        !todo.isCompleted && todo.dueDate && todo.dueDate.isAfter(dayjs())
-    );
-  };
-
-  const getOverdueTodos = (todos: Todo[]) => {
-    return todos.filter(
-      (todo) =>
-        !todo.isCompleted && todo.dueDate && todo.dueDate.isBefore(dayjs())
-    );
-  };
-
-  const getCompleteTodos = (todos: Todo[]) => {
-    return todos.filter((todo) => todo.isCompleted);
-  };
-
-  const overdueTodos = useMemo(() => getOverdueTodos(todos), [todos]);
-  const outstandingTodos = useMemo(() => getOutstandingTodos(todos), [todos]);
-  const completedTodos = useMemo(() => getCompleteTodos(todos), [todos]);
+  const overdueTodos = getOverdueTodos();
+  const outstandingTodos = getOutstandingTodos();
+  const completedTodos = getCompleteTodos();
 
   return (
     <TodoProvider value={{ todos, addTodo, toggleCompletion }}>
